@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Dashboard</title>
+</head>
+
+<body>
+
+<h1>Expense Dashboard</h1>
+
+<a href="/add">Add Expense</a>
+
+<table border="1">
+
+<tr>
+<th>Category</th>
+<th>Amount</th>
+<th>Description</th>
+<th>Delete</th>
+</tr>
+
+{% for expense in expenses %}
+<tr>
+<td>{{expense.category}}</td>
+<td>{{expense.amount}}</td>
+<td>{{expense.description}}</td>
+
+<td>
+<a href="/delete/{{expense.id}}">Delete</a>
+</td>
+
+</tr>
+{% endfor %}
+
+</table>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<canvas id="expenseChart"></canvas>
+
+<script>
+var ctx = document.getElementById('expenseChart').getContext('2d');
+
+var chart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: {{ labels | tojson }},
+        datasets: [{
+            label: 'Expenses',
+            data: {{ amounts | tojson }},
+            backgroundColor: 'rgba(54, 162, 235, 0.6)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+</script>
+</body>
+</html>
